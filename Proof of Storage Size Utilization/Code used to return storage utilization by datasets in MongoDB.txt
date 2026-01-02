@@ -1,0 +1,19 @@
+db.getCollectionNames().forEach(function(collName) {
+    var stats = db[collName].stats();
+    
+    // Collection row
+    print(collName.padEnd(30) + 
+          "COLLECTION".padEnd(15) + 
+          (stats.storageSize / 1024 / 1024).toFixed(2).padStart(10) + " MB");
+    
+    // Index rows
+    if (stats.indexSizes) {
+        for (var indexName in stats.indexSizes) {
+            print("  " + indexName.padEnd(28) + 
+                  "INDEX".padEnd(15) + 
+                  (stats.indexSizes[indexName] / 1024 / 1024).toFixed(2).padStart(10) + " MB" +
+                  "  (on " + collName + ")");
+        }
+    }
+    print(""); // blank line between collections
+}); 
